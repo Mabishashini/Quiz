@@ -36,3 +36,17 @@
     margin: 30px auto 0 auto;
     border-radius: 10px;
  }
+ .copy-button{
+   background-color: #fff;
+   color: #2ec4b6;
+   font-size: 14px;
+   width:50%;
+   margin:0 auto;
+   margin-top: 10px;
+   border-radius: 10px;
+   font-weight: 700;
+   cursor: pointer;
+ }
+ .copied-text{
+   font-size: 12px;
+ }

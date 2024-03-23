@@ -14,13 +14,15 @@ mongoose.connect(process.env.MONGO_URI).then(() => console.log('Connected to Mon
 
 // Import controllers
 const { createQuiz, addQuestion, getQuizByGamePin } = require('./controllers/createQuiz');
-const { saveScore } = require('./controllers/scoreController');
+const { saveScore,checkUsername} = require('./controllers/scoreController');
 
 // Define routes
 app.post('/quiz', createQuiz); // Route for creating a new quiz
 app.post('/quiz/:gamePin/questions', addQuestion); // Route for adding a question to an existing quiz
 app.get('/quiz/:gamePin', getQuizByGamePin);
 app.post('/score/submit', saveScore);
+app.get("/score/check", checkUsername)
+
 
 app.listen(8000, () => {
   console.log('API Working');

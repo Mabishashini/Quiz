@@ -5,24 +5,15 @@ const saveScore = async (req, res) => {
     const { gamePin, username, score } = req.body;
 
     try {
-        // Check if there is an existing score document for the game pin
-        let scoreDoc = await Score.findOne({ gamePin });
+        // Create a new score document
+        const newScore = new Score({
+            gamePin,
+            username,
+            score
+        });
 
-        if (!scoreDoc) {
-            // If no score document exists for the game pin, create a new one
-            scoreDoc = new Score({
-                gamePin,
-                username,
-                score
-            });
-        } else {
-            // If a score document exists, update the score for the user
-            scoreDoc.username = username;
-            scoreDoc.score = score;
-        }
-
-        // Save the score document
-        await scoreDoc.save();
+        // Save the new score document
+        await newScore.save();
 
         res.status(201).json({ message: 'Score saved successfully' });
     } catch (error) {
@@ -31,4 +22,34 @@ const saveScore = async (req, res) => {
     }
 };
 
-module.exports = { saveScore };
+
+const checkUsername = async (req, res) => {
+    const { gamePin, username } = req.query;
+
+    try {
+        // Select all scores from the database with the given gamePin
+        const selectedData = await Score.find({ gamePin });
+
+        // Check if there exists any user with the same username within the selected scores
+        const exists = selectedData.some(score => score.username === username);
+
+        if (!exists) {
+            // If the score document does not exist, create a new one with an initial score of 0
+            const newScore = new Score({
+                gamePin,
+                username,
+                score: 0
+            });
+            await newScore.save();
+        }
+
+        // Return the result to the client
+        res.status(200).json({ exists });
+    } catch (error) {
+        console.error('Error checking username:', error);
+        res.status(500).json({ error: 'Failed to check username' });
+    }
+};
+
+
+module.exports = { saveScore, checkUsername };

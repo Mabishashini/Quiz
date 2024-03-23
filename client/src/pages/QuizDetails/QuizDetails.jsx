@@ -1,10 +1,8 @@
-// QuizDetails.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import "./QuizDetails.css"
 import Navbar from '../../components/Navbar/Navbar';
+import "./QuizDetails.css"
 
 const QuizDetails = () => {
   const { gamePin } = useParams();
@@ -13,6 +11,7 @@ const QuizDetails = () => {
   const [error, setError] = useState('');
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(null);
+  const [totalQuestions, setTotalQuestions] = useState(0); // Initialize total questions state
   const navigate = useNavigate();
   const location = useLocation();
   const username = new URLSearchParams(location.search).get('username');
@@ -22,6 +21,7 @@ const QuizDetails = () => {
       try {
         const response = await axios.get(`http://localhost:8000/quiz/${gamePin}`);
         setQuiz(response.data);
+        setTotalQuestions(response.data.questions.length); // Set total questions from the fetched data
         setLoading(false);
       } catch (error) {
         setError('Failed to fetch quiz details');
@@ -52,7 +52,7 @@ const QuizDetails = () => {
         score
       });
       setScore(score);
-      navigate(`/score?score=${score}`);
+      navigate(`/score?score=${score}&totalQuestions=${totalQuestions}`); // Pass total questions as a URL parameter
     } catch (error) {
       console.error('Error submitting score:', error);
     }
@@ -62,50 +62,47 @@ const QuizDetails = () => {
     <div className='quiz'>
       <Navbar/>
       <div className="create-outerContainer">
-
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-      {quiz && (
-        <div className="create-container">
-          <div>
-
-          <h2 className='create-create-quiz'>Let's Playyyy!!</h2>
-          <p className='quiz-gamePin'>Game PIN: {quiz.gamePin}</p>
-          <h2 className='quiz-title'>{quiz.title}</h2>
-         
-          <form>
-            {quiz.questions.map((question, questionIndex) => (
-              <div key={questionIndex} className='quiz-form create-qn'>
-                <p className='quiz-qn'>{questionIndex + 1}. {question.question}</p> {/* Display question number */}
-                <ul className='quiz-list'>
-                  {question.options.map((option, optionIndex) => (
-                    <li key={optionIndex} className='quiz-option'>
-                      <input
-                        type="radio"
-                        id={`option_${questionIndex}_${optionIndex}`}
-                        name={`question_${questionIndex}`}
-                        value={optionIndex}
-                        checked={answers[questionIndex] === optionIndex}
-                        onChange={(e) => handleOptionChange(questionIndex, optionIndex, e)}
-                        className='quiz-input'
-                      />
-                      <label htmlFor={`option_${questionIndex}_${optionIndex}`}>{option}</label>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-            <button type="button" onClick={handleSubmit} className='create-btn home-btn'>Submit</button>
-          </form>
-          {score !== null && (
+        {loading && <p>Loading...</p>}
+        {error && <p>{error}</p>}
+        {quiz && (
+          <div className="create-container">
             <div>
-              <h3>Result:</h3>
-              <p>Score: {score} / {quiz.questions.length}</p>
+              <h2 className='create-create-quiz'>Let's Playyyy!!</h2>
+              <p className='quiz-gamePin'>Game PIN: {quiz.gamePin}</p>
+              <h2 className='quiz-title'>{quiz.title}</h2>
+              <form>
+                {quiz.questions.map((question, questionIndex) => (
+                  <div key={questionIndex} className='quiz-form create-qn'>
+                    <p className='quiz-qn'>{questionIndex + 1}. {question.question}</p>
+                    <ul className='quiz-list'>
+                      {question.options.map((option, optionIndex) => (
+                        <li key={optionIndex} className='quiz-option'>
+                          <input
+                            type="radio"
+                            id={`option_${questionIndex}_${optionIndex}`}
+                            name={`question_${questionIndex}`}
+                            value={optionIndex}
+                            checked={answers[questionIndex] === optionIndex}
+                            onChange={(e) => handleOptionChange(questionIndex, optionIndex, e)}
+                            className='quiz-input'
+                          />
+                          <label htmlFor={`option_${questionIndex}_${optionIndex}`}>{option}</label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+                <button type="button" onClick={handleSubmit} className='create-btn home-btn'>Submit</button>
+              </form>
+              {score !== null && (
+                <div>
+                  <h3>Result:</h3>
+                  <p>Score: {score} / {totalQuestions}</p>
+                </div>
+              )}
             </div>
-          )}
           </div>
-        </div>
-      )}
+        )}
       </div>
     </div>
   );

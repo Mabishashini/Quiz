@@ -5,7 +5,6 @@ const ScoreSchema = mongoose.Schema({
     gamePin: {
         type: String,
         required: true,
-        unique: true
     },
     username: {
         type: String,
