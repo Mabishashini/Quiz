@@ -1,0 +1,23 @@
+.arya-regular {
+    font-family: "Arya", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .arya-bold {
+    font-family: "Arya", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  .forum-regular {
+    font-family: "Forum", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  *{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+  }

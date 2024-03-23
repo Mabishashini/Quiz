@@ -1,0 +1,33 @@
+.nav-container{
+    display: flex;
+    justify-content: space-between;
+    font-family: "Forum", serif;
+    font-weight: 400;
+    font-style: normal;
+    margin:0 100px;
+    align-items: center;
+    height:50px;
+}
+.link{
+    text-decoration: none;
+    color:inherit;
+}
+.navbar-nav{
+    display: flex;
+    gap: 1rem
+}
+.navbar-nav li{
+    list-style: none;
+    font-size: 20px;
+}
+.logo{
+    font-size: 25px;
+    font-weight: 700;
+    color:#2ec4b6
+}
+.logo span{
+    color:#ff9f1c
+}
+.navbar{
+    background-color: #fff;
+}

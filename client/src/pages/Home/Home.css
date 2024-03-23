@@ -1,0 +1,32 @@
+.home{
+    background: url("../../images/homeImg.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+.home-container{
+    height : calc(100vh - 50px);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap:1rem;
+}
+.home-btn {
+    border: none;
+    outline: none;
+    background-color: #ff9f1c;
+    color: white;
+    padding: 10px 20px;
+    width: 150px;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.home-btn:hover {
+    background-color: #ffbf69;
+    transform: scale(1.05);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
