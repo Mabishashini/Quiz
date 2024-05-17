@@ -7,6 +7,7 @@ import Play from './pages/Play/Play';
 import QuizDetails from './pages/QuizDetails/QuizDetails';
 import ScorePage from './pages/Score/Score';
 import QuizCreated from './pages/QuizCreated/QuizCreated';
+import LeaderBoard from './pages/LeaderBoard/LeaderBoard';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/quiz/:gamePin" element={<QuizDetails/>} />
         <Route path="/score" element={<ScorePage/>} />
         <Route path="/quiz-created" element={<QuizCreated />} />
+        <Route path="/leaderboard/:gamePin" element={<LeaderBoard />} />
       </Routes>
     </div>
   );

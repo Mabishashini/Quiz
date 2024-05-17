@@ -12,10 +12,12 @@ const Play = () => {
 
   const handleGamePinChange = (event) => {
     setGamePin(event.target.value);
+    setError("");
   };
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
+    setError("");
   };
 
   const handleSubmit = async (event) => {
@@ -62,7 +64,9 @@ const Play = () => {
             />
             <button className="play-btn home-btn" type="submit">Play</button>
           </form>
-          {error && <p className="error">{error}</p>}
+          {error && <div className="play-error">
+          <p className="error">{error}</p>
+            </div>}
         </div>
       </div>
     </div>

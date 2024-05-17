@@ -11,7 +11,8 @@ const QuizDetails = () => {
   const [error, setError] = useState('');
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(null);
-  const [totalQuestions, setTotalQuestions] = useState(0); // Initialize total questions state
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [validationError, setValidationError] = useState(false); // State to manage validation error
   const navigate = useNavigate();
   const location = useLocation();
   const username = new URLSearchParams(location.search).get('username');
@@ -21,7 +22,7 @@ const QuizDetails = () => {
       try {
         const response = await axios.get(`http://localhost:8000/quiz/${gamePin}`);
         setQuiz(response.data);
-        setTotalQuestions(response.data.questions.length); // Set total questions from the fetched data
+        setTotalQuestions(response.data.questions.length);
         setLoading(false);
       } catch (error) {
         setError('Failed to fetch quiz details');
@@ -38,6 +39,12 @@ const QuizDetails = () => {
   };
 
   const handleSubmit = async () => {
+    // Validate if all questions are answered
+    if (Object.keys(answers).length !== totalQuestions) {
+      setValidationError(true);
+      return;
+    }
+    
     // Calculate score
     let score = 0;
     quiz.questions.forEach((question, index) => {
@@ -52,7 +59,7 @@ const QuizDetails = () => {
         score
       });
       setScore(score);
-      navigate(`/score?score=${score}&totalQuestions=${totalQuestions}`); // Pass total questions as a URL parameter
+      navigate(`/leaderboard/${gamePin}?username=${username}&score=${score}`);
     } catch (error) {
       console.error('Error submitting score:', error);
     }
@@ -93,13 +100,9 @@ const QuizDetails = () => {
                   </div>
                 ))}
                 <button type="button" onClick={handleSubmit} className='create-btn home-btn'>Submit</button>
+                {validationError && <p className="error-msg">Please answer all questions before submitting.</p>}
               </form>
-              {score !== null && (
-                <div>
-                  <h3>Result:</h3>
-                  <p>Score: {score} / {totalQuestions}</p>
-                </div>
-              )}
+              
             </div>
           </div>
         )}

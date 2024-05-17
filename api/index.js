@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 
 const app = express();
 const corsOptions = {
-  origin: 'https://quiz-omcd.vercel.app',
+  origin: ['https://quiz-omcd.vercel.app', "http://localhost:3000"],
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
@@ -20,7 +20,7 @@ mongoose.connect(process.env.MONGO_URI).then(() => console.log('Connected to Mon
 
 // Import controllers
 const { createQuiz, addQuestion, getQuizByGamePin } = require('./controllers/createQuiz');
-const { saveScore,checkUsername} = require('./controllers/scoreController');
+const { saveScore,checkUsername, getLeaderboard, getRankByUsername} = require('./controllers/scoreController');
 
 // Define routes
 app.post('/quiz', createQuiz); // Route for creating a new quiz
@@ -28,6 +28,8 @@ app.post('/quiz/:gamePin/questions', addQuestion); // Route for adding a questio
 app.get('/quiz/:gamePin', getQuizByGamePin);
 app.post('/score/submit', saveScore);
 app.get("/score/check", checkUsername)
+app.get('/leaderboard/:gamePin', getLeaderboard);
+app.get('/rank', getRankByUsername);
 
 
 app.listen(8000, () => {

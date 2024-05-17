@@ -11,7 +11,17 @@ const Create = () => {
   const navigate = useNavigate();
 
   const addQuestion = () => {
-    setQuestions([...questions, { question: '', options: ['', '', ''], correctAnswerIndex: null }]);
+    // Check if all fields in the last question are filled before adding a new question
+    const lastQuestion = questions[questions.length - 1];
+    const isLastQuestionFilled = lastQuestion.question.trim() !== '' &&
+      lastQuestion.options.every(option => option.trim() !== '') &&
+      lastQuestion.correctAnswerIndex !== null;
+
+    if (isLastQuestionFilled) {
+      setQuestions([...questions, { question: '', options: ['', '', ''], correctAnswerIndex: null }]);
+    } else {
+      alert('Please fill all fields for the current question before adding a new one.');
+    }
   };
 
   const handleQuestionChange = (index, event) => {
@@ -26,8 +36,40 @@ const Create = () => {
     setQuestions(newQuestions);
   };
 
+  const handleDeleteQuestion = (index) => {
+    const newQuestions = [...questions];
+    newQuestions.splice(index, 1);
+    setQuestions(newQuestions);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Form validation
+    if (title.trim() === '') {
+      alert('Please enter a title for the quiz.');
+      return;
+    }
+
+    let isValid = true;
+    questions.forEach((question, index) => {
+      if (question.question.trim() === '') {
+        alert(`Please enter a question for Question ${index + 1}.`);
+        isValid = false;
+      }
+      question.options.forEach((option, optionIndex) => {
+        if (option.trim() === '') {
+          alert(`Please enter an option for Question ${index + 1}, Option ${optionIndex + 1}.`);
+          isValid = false;
+        }
+      });
+      if (question.correctAnswerIndex === null) {
+        alert(`Please select a correct answer for Question ${index + 1}.`);
+        isValid = false;
+      }
+    });
+
+    if (!isValid) return;
 
     try {
       // Ensure each question has a correct answer before sending the request
@@ -73,6 +115,7 @@ const Create = () => {
             </div>
             {questions.map((question, index) => (
               <div key={index} className='create-qn'>
+                {questions.length > 1 && <div className="delete-icon" onClick={() => handleDeleteQuestion(index)}>&times;</div>}
                 <label htmlFor={`question${index}`}>Question {index + 1}:</label>
                 <input type="text" id={`question${index}`} value={question.question} onChange={(e) => handleQuestionChange(index, e)} required className="input" />
                 {question.options.map((option, optionIndex) => (

@@ -1,9 +1,9 @@
 .play-container{
-    height: calc(100vh - 50px);
+    height: calc(100vh - 80px);
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url("../../images/quiz-created.jpg");
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../../images/homeImg.jpg");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -13,15 +13,16 @@
     flex-direction: column;  
 font-family: "Poppins", sans-serif;
 max-width: 800px;
-min-width: 500px;
+min-width: 380px;
 }
 .play-form{
     display: flex;
     flex-direction: column;
     background-color: aliceblue;
     padding:30px;
-    background-color: rgba(255,255,255,0.2);
-    color:#fff;
+    background-color: rgba(255,255,255,0.6);
+    color:black;
+    border-radius: 10px;
 }
 .play-title{
     background-color: #fff;
@@ -43,7 +44,19 @@ min-width: 500px;
     font-size: 16px;
 }
 .error{
-    color: red;
     font-size: 14px;
-    margin-top: 20px;
 }
+.play-error{
+    background-color: #df9ba1;
+    color: #721c24;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    margin-top: 30px;
+    justify-content: center;
+    border-radius: 2px;
+}
+
+@media only screen and (max-width: 768px) {
+   
+  }
